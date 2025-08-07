@@ -5,6 +5,88 @@ namespace HttpMessageParser.Tests
     public class HttpResponseExtraChallengeTests
     {
         [Test]
+        public void GetHeaderValue_ThrowsArgumentExceptionForNullHeaderName()
+        {
+            HttpResponse response = new HttpResponse
+            {
+                Protocol = "HTTP/1.1",
+                StatusCode = 200,
+                StatusText = "OK",
+                Headers = new Dictionary<string, string>(),
+            };
+
+            Assert.Throws<ArgumentException>(() => response.GetHeaderValue(null));
+        }
+
+        [Test]
+        public void GetHeaderValue_ThrowsArgumentExceptionForEmptyHeaderName()
+        {
+            HttpResponse response = new HttpResponse
+            {
+                Protocol = "HTTP/1.1",
+                StatusCode = 200,
+                StatusText = "OK",
+                Headers = new Dictionary<string, string>(),
+            };
+
+            Assert.Throws<ArgumentException>(() => response.GetHeaderValue(string.Empty));
+        }
+
+        [Test]
+        public void GetHeaderValue_ReturnsNullForNonExistentHeader()
+        {
+            HttpResponse response = new HttpResponse
+            {
+                Protocol = "HTTP/1.1",
+                StatusCode = 200,
+                StatusText = "OK",
+                Headers = new Dictionary<string, string>(),
+            };
+
+            string headerValue = response.GetHeaderValue("Non-Existent-Header");
+
+            Assert.IsNull(headerValue);
+        }
+
+        [Test]
+        public void GetHeaderValue_ReturnsCorrectValueForExistingHeader()
+        {
+            HttpResponse response = new HttpResponse
+            {
+                Protocol = "HTTP/1.1",
+                StatusCode = 200,
+                StatusText = "OK",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Content-Type", "application/json" }
+                },
+            };
+
+            string headerValue = response.GetHeaderValue("Content-Type");
+
+            Assert.That(headerValue, Is.EqualTo("application/json"));
+        }
+
+        [Test]
+        public void GetHeaderValue_IsCaseInsensitive()
+        {
+            HttpResponse response = new HttpResponse
+            {
+                Protocol = "HTTP/1.1",
+                StatusCode = 200,
+                StatusText = "OK",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Content-Type", "application/json" }
+                },
+            };
+
+            string headerValue = response.GetHeaderValue("content-type");
+
+            Assert.That(headerValue, Is.EqualTo("application/json"));
+        }
+
+        [Test]
         public void IsSuccess_ReturnsTrueForSuccessfulStatusCodes()
         {
             for (int statusCode = 200; statusCode < 300; statusCode++)

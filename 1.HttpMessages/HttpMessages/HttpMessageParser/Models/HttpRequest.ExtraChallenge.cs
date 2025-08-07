@@ -3,6 +3,19 @@
     public partial class HttpRequest
     {
         /// <summary>
+        /// Returns the value of a specific header from the request. This is case-insensitive.
+        /// </summary>
+        /// <param name="headerName">The name of the header to retrieve.</param>
+        /// <returns>
+        /// The value of the specified header if it exists; otherwise, null.
+        /// </returns>
+        /// <exception cref="ArgumentException">If the <paramref name="headerName"/> is null or empty.</exception>"
+        public string GetHeaderValue(string headerName)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Extracts the query parameters from the <c>RequestTarget</c> property.
         /// </summary>
         /// <remarks>

@@ -1,14 +1,98 @@
 ﻿using HttpMessageParser.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HttpMessageParser.Tests
 {
     public class HttpRequestExtraChallengeTests
     {
+        [Test]
+        public void GetHeaderValue_ThrowsArgumentExceptionForNullHeaderName()
+        {
+            HttpRequest request = new HttpRequest
+            {
+                Method = "GET",
+                RequestTarget = "/path",
+                Protocol = "HTTP/1.1",
+                Headers = new Dictionary<string, string>(),
+                Body = null
+            };
+
+            Assert.Throws<ArgumentException>(() => request.GetHeaderValue(null));
+        }
+
+        [Test]
+        public void GetHeaderValue_ThrowsArgumentExceptionForEmptyHeaderName()
+        {
+            HttpRequest request = new HttpRequest
+            {
+                Method = "GET",
+                RequestTarget = "/path",
+                Protocol = "HTTP/1.1",
+                Headers = new Dictionary<string, string>(),
+                Body = null
+            };
+
+            Assert.Throws<ArgumentException>(() => request.GetHeaderValue(string.Empty));
+        }
+
+        [Test]
+        public void GetHeaderValue_ReturnsNullForNonExistentHeader()
+        {
+            HttpRequest request = new HttpRequest
+            {
+                Method = "GET",
+                RequestTarget = "/path",
+                Protocol = "HTTP/1.1",
+                Headers = new Dictionary<string, string>(),
+                Body = null
+            };
+
+            string headerValue = request.GetHeaderValue("Non-Existent-Header");
+
+            Assert.IsNull(headerValue);
+        }
+
+        [Test]
+        public void GetHeaderValue_ReturnsCorrectValueForExistingHeader()
+        {
+            HttpRequest request = new HttpRequest
+            {
+                Method = "GET",
+                RequestTarget = "/path",
+                Protocol = "HTTP/1.1",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Content-Type", "application/json" }
+                },
+                Body = null
+            };
+
+            string headerValue = request.GetHeaderValue("Content-Type");
+
+            Assert.IsNotNull(headerValue);
+            Assert.That(headerValue, Is.EqualTo("application/json"));
+        }
+
+        [Test]
+        public void GetHeaderValue_IsCaseInsensitive()
+        {
+            HttpRequest request = new HttpRequest
+            {
+                Method = "GET",
+                RequestTarget = "/path",
+                Protocol = "HTTP/1.1",
+                Headers = new Dictionary<string, string>
+                {
+                    { "Content-Type", "application/json" }
+                },
+                Body = null
+            };
+
+            string headerValue = request.GetHeaderValue("content-type");
+
+            Assert.IsNotNull(headerValue);
+            Assert.That(headerValue, Is.EqualTo("application/json"));
+        }
+
         [Test]
         public void GetQueryParameters_ReturnsEmptyDictionaryForNoQueryString()
         {
