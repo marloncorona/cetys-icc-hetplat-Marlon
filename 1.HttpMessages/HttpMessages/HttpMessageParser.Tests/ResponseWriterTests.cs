@@ -66,11 +66,20 @@ namespace HttpMessageParser.Tests
                 },
                 Body = null
             };
-            string expected = "HTTP/1.1 404 Not Found\n" +
-                              "Content-Type: text/html\n" +
-                              "Server: TestServer";
+            string expectedFirstLine = "HTTP/1.1 404 Not Found\n";
+            string[] expectedHeadersStrings = new string[]
+            {
+                "\nContent-Type: text/html",
+                "\nServer: TestServer"
+            };
+
             string result = responseWriter.WriteResponse(response);
-            Assert.That(result.Trim(), Does.StartWith(expected));
+
+            Assert.That(result.Trim(), Does.StartWith(expectedFirstLine));
+            foreach(string expectedHeader in expectedHeadersStrings)
+            {
+                Assert.That(result.Trim(), Does.Contain(expectedHeader));
+            }
         }
 
         [Test]
@@ -88,14 +97,22 @@ namespace HttpMessageParser.Tests
                 },
                 Body = "{\"id\":1,\"ok\":true}"
             };
-            string expected = "HTTP/1.1 201 Created" +
-                              "\nContent-Type: application/json\n" +
-                              "Content-Length: 18\n" +
-                              "\n" +
-                              "{\"id\":1,\"ok\":true}";
+
+            string expectedFirstLine = "HTTP/1.1 201 Created\n";
+            string[] expectedHeadersStrings = new string[]
+            {
+                "\nContent-Type: application/json",
+                "\nContent-Length: 18"
+            };
+            string expectedBody = "\n{\"id\":1,\"ok\":true}";
 
             string result = responseWriter.WriteResponse(response);
-            Assert.That(result.Trim(), Does.StartWith(expected));
+            Assert.That(result.Trim(), Does.StartWith(expectedFirstLine));
+            foreach(string expectedHeader in expectedHeadersStrings)
+            {
+                Assert.That(result.Trim(), Does.Contain(expectedHeader));
+            }
+            Assert.That(result.Trim(), Does.EndWith(expectedBody));
         }
     }
 }

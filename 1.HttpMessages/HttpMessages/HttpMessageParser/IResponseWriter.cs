@@ -14,6 +14,8 @@ namespace HttpMessageParser
         /// <returns>
         /// A string representation of the <paramref name="response"/> instance.
         /// </returns>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="response"/> is null.</exception>
+        /// <exception cref="ArgumentException">Thrown when any of the required properties in the <paramref name="response"/> object are null or empty.</exception>
         public string WriteResponse(HttpResponse response);
     }
 }

@@ -14,6 +14,7 @@ namespace HttpMessageParser
         /// <param name="requestText">The raw HTTP request as a string. Must not be <see langword="null"/> or empty.</param>
         /// <returns>An <see cref="HttpRequest"/> object containing the parsed data from the request text.</returns>
         /// <exception cref="ArgumentException">Thrown when <paramref name="requestText"/> is <see langword="null"/>, empty or malformed.</exception>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="requestText"/> is <see langword="null"/>.</exception>
         public HttpRequest ParseRequest(string requestText);
     }
 }
