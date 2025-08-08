@@ -18,13 +18,13 @@ For a better understanding of the HTTP message structure, you can refer to the [
     1. Create the new class in the same directory as the interface. 
 	1. Ensure that your class is public.
 	1. Implement the `ParseRequest` method in your `HttpRequestParser` class. This method should take a string representing an HTTP request and return an `HttpRequest` object.
-		2. If the input string is null, it should throw an `ArgumentNullException`
-		3. If the input string is empty, it should throw an `ArgumentException`
-		4. If the input string is not in valid HTTP format or it's missing required fields, it should throw an `ArgumentException`.
-		5. The HTTP method is present, regardless of its actual value
-		6. The Request Target contains at least one "/" character
-		7. The HTTP protocol version should be present and start with "HTTP"
-		8. Each HTTP header line should include exactly ":" character; and there needs to be text before and after it
+	2. If the input string is null, it should throw an `ArgumentNullException`
+	3. If the input string is empty, it should throw an `ArgumentException`
+	4. If the input string is not in valid HTTP format or it's missing required fields, it should throw an `ArgumentException`.
+	5. The HTTP method is present, regardless of its actual value
+	6. The Request Target contains at least one "/" character
+	7. The HTTP protocol version should be present and start with "HTTP"
+	8. Each HTTP header line should include exactly ":" character; and there needs to be text before and after it
 	1. [Optional] Update the [`Setup` method in the `RequestParserTests` class](https://github.com/ludanortmun/cetys-icc-hetplat/tree/main/1.HttpMessages/HttpMessages/HttpMessageParser.Tests/RequestParserTests.cs?plain=1#L13) so that the `requestParser` field is initialized with an instance of your `HttpRequestParser` class. 
 		- This will allow you to use the existing tests to verify your implementation.
 		- DO NOT modify the tests themselves; only the setup method.
